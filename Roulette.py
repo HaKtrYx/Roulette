@@ -1,9 +1,7 @@
-# Imports
-import random
-import time
+import random  # Import the random module to generate random numbers
+import time  # Import the time module to add delays
 
-# Variablen und Listen
-
+# Define the initial balance and lists for different betting options
 balance = 1000
 red = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
 black = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35]
@@ -17,22 +15,13 @@ mid = list(range(13, 25))
 high = list(range(25, 37))
 lower = list(range(1, 19))
 upper = list(range(19, 37))
-bet_red = 0
-bet_black = 0
-bet_even = 0
-bet_odd = 0
-bet_row1 = 0
-bet_row2 = 0
-bet_row3 = 0
-bet_low = 0
-bet_mid = 0
-bet_high = 0
-bet_lower = 0
-bet_upper = 0
 
-# User interaktion um "Geld" zu setzen
 
 def placeBet():
+    """
+    Function to prompt the user to place their bets on different options.
+    It updates the global variables for each bet amount.
+    """
     global bet_red, bet_black, bet_even, bet_odd, bet_row1, bet_row2, bet_row3, bet_low, bet_mid, bet_high, bet_lower, bet_upper, bet
     print("Your current Balance is\t\t\t: ", balance, "\n")
     bet_red = int(input("Amount on Red\t\t\t\t: "))
@@ -48,20 +37,24 @@ def placeBet():
     bet_lower = int(input("Amount on 1-18\t\t\t\t: "))
     bet_upper = int(input("Amount on 19-36\t\t\t\t: "))
     bet = bet_red + bet_black + bet_even + bet_odd + bet_row1 + bet_row2 + bet_row3 + bet_low + bet_mid + bet_high + bet_upper + bet_lower
-    
-# Zufallszahl generieren und auszugeben
 
 def LuckyWheel():
+    """
+    Function to generate a random lucky number between 0 and 36.
+    It prints the lucky number with a red color if it's a red number.
+    """
     global lucky_number
     lucky_number = random.randint(0, 36)
     if lucky_number in red:
         print("__________________________________ \n The lucky number is: \033[31m", lucky_number, "\033[0m \n__________________________________")
     else:
         print("__________________________________ \n The lucky number is: ", lucky_number, "\n__________________________________")
-        
-# Berechnung des Gewinnes
 
 def Payout():
+    """
+    Function to calculate the payout based on the lucky number and the user's bets.
+    It updates the global variables for the result and balance.
+    """
     global result, balance
     result = 0
     if lucky_number in red:
@@ -87,14 +80,16 @@ def Payout():
     if lucky_number in mid:
         result += bet_mid * 3
     if lucky_number in low:
-        result += bet_low * 3 
-   
-# Spielablauf
+        result += bet_low * 3
 
 def game():
-    global balance, bet, result  
+    """
+    Main function to run the game loop.
+    It calls the other functions, updates the balance, and handles the game over condition.
+    """
+    global balance, bet, result
     while True:
-        print('\n' * 100)
+        print('\n' * 100)  # Clear the console
         placeBet()
         LuckyWheel()
         if balance < bet:
@@ -104,7 +99,7 @@ def game():
         else:
             balance -= bet
             Payout()
-            balance += result  # Update balance before checking the condition
+            balance += result
             if balance == 0:
                 print("You have no balance left. \033[1mGame over.\033[0m")
                 print("""'   .----------------.  .----------------.  .----------------.  .----------------. 
@@ -129,7 +124,7 @@ def game():
 '  | |              | || |              | || |              | || |              | |
 '  | '--------------' || '--------------' || '--------------' || '--------------' |
 '   '----------------'  '----------------'  '----------------'  '----------------' """)
-                break  
+                break
             elif result > 0:
                 print("You won:\t\t\t\t ", result)
             else:
@@ -137,6 +132,5 @@ def game():
             time.sleep(3)
             print('\n' * 100)
 
-# Spiel wird ausgeführt
-
+# Call the game function to start the game
 game()
